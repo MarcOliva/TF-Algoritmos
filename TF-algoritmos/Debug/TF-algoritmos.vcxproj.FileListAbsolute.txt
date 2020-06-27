@@ -1,5 +1,0 @@
-C:\Users\Marc\Documents\TF-Algoritmos\TF-Algoritmos\Debug\TF-algoritmos.vcxprojAssemblyReference.cache
-C:\Users\Marc\Documents\TF-Algoritmos\TF-Algoritmos\Debug\TFalgoritmos.MyForm.resources
-C:\Users\Marc\Documents\TF-Algoritmos\TF-Algoritmos\Debug\TF-algoritmos.vcxproj.GenerateResource.cache
-C:\Users\Marc\Documents\TF-Algoritmos\TF-Algoritmos\Debug\TF-algoritmos.exe
-C:\Users\Marc\Documents\TF-Algoritmos\TF-Algoritmos\Debug\TF-algoritmos.pdb
