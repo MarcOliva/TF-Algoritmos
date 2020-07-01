@@ -142,7 +142,7 @@ public:
 			system("cls");
 			
 			cout << "OBS: Se permite ingresar 10 filas como maximo de golpe\n";
-			cout << "Use el formato CSV para imsertar las filas\n";
+			cout << "Use el formato CSV (delimitar con ;) para imsertar las filas\n";
 			cout << "Ingrese el numero de filas a insertar: ";
 			cin >> opcion;
 		} while (opcion < 1 || opcion > 10);
