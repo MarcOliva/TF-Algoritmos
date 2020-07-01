@@ -8,26 +8,25 @@ class Tabla
 private:
     std::string nombre;
     Lista<ColumnaNombre*, nullptr>* nombresColumnas;
-    ABB<Fila*, Fila, nullptr>* datosArbol;
+    ABB<Fila*, Fila*, nullptr>* datosArbol;
     Lista<int, -1>* selectColumnas;
     int nroColumnas;
     int indexColumna;
     function<bool(Fila*, Fila*)> comparar;
 public:
-    Tabla(std::string name, int nrocols, Lista<ColumnaNombre*, nullptr>* nombresCols = nullptr, int indexCol = 0, 
-        function<Fila(Fila*)> _key = [](Fila* a) { return (*a); })
+    Tabla(std::string name, int nrocols, Lista<ColumnaNombre*, nullptr>* nombresCols = nullptr, int indexCol = 0)
         : nombre(name), nroColumnas(nrocols), indexColumna(indexCol)
     {
         this->nombresColumnas = new Lista<ColumnaNombre*, nullptr>();
 
-        comparar = [indexCol](Fila* mayor, Fila* menor) -> bool
+        this->comparar = [indexCol](Fila* mayor, Fila* menor) -> bool
         {
             return mayor->compararMayor(menor, indexCol);
         };
 
-        this->datosArbol = new ABB<Fila*, Fila, nullptr>(_key);
-        
-        for ( auto x : *nombresCols )
+        this->datosArbol = new ABB<Fila*, Fila*, nullptr>(this->comparar);
+
+        for (auto x : *nombresCols)
         {
             nombresColumnas->agregar_final(x);
         }
@@ -94,7 +93,7 @@ public:
             //cout << "LLego hasta aqui\n";
         }
 
-        if (dec) this->datosArbol->addElemento(nuevafila, this->comparar);
+        if (dec) this->datosArbol->addElemento(nuevafila);
         return dec;
     }
 
@@ -107,6 +106,30 @@ public:
     {
         delete selectColumnas;
         this->selectColumnas = new Lista<int, -1>();
+    }
+
+    void setIndexColumna(int indexCol)
+    {
+        //cambiamos el valor de index
+        this->indexColumna = indexCol;
+
+        //cambiamos el lambda de comparar en el arbol
+        this->comparar = [indexCol](Fila* mayor, Fila* menor) -> bool
+        {
+            return mayor->compararMayor(menor, indexCol);
+        };
+
+        //generamos el nuevo arbol con ayuda del lambda
+        ABB<Fila*, Fila*, nullptr>* nuevoArbol = new ABB<Fila*, Fila*, nullptr>(this->comparar);
+
+        auto agregar = [&nuevoArbol](Fila* current)
+        {
+            nuevoArbol->addElemento(current);
+        };
+
+        this->datosArbol->inOrder(agregar);
+
+        this->datosArbol = nuevoArbol;
     }
 
     void SeleccionarColumna(int index);

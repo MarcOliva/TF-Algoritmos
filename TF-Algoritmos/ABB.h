@@ -18,14 +18,12 @@ private:
 
     Nodo* root;
     function<R(T)> key;
-    //function<bool(T, T)> compararMayor;
+    function<bool(T, T)> compararMayor;
     int length;
 public:
-    ABB(function<R(T)> _key = [](T a) { return a; })
-        : key(_key), root(nullptr), length(0)
-    {
-        //this->compararMayor = [&](T mayor, T menor) { return ( _key(mayor) > _key(menor) ); };
-    }
+    ABB(function<bool(T, T)> comparar, function<R(T)> _key = [](T a) { return a; })
+        : key(_key), root(nullptr), length(0), compararMayor(comparar)
+    { }
 
     ~ABB()
     {
@@ -42,9 +40,9 @@ public:
         return this->length;
     }
 
-    void addElemento(T elem, function<bool(T, T)> comp)
+    void addElemento(T elem)
     {
-        this->addElemento(this->root, elem, comp);
+        this->addElemento(this->root, elem);
     }
 
     void inOrder(function<void(T)> proc)
@@ -76,7 +74,7 @@ private:
         return (nodo == nullptr ? 0 : nodo->levels);
     }
 
-    void addElemento(Nodo*& nodo, T elem, function<bool(T, T)> comp)
+    void addElemento(Nodo*& nodo, T elem)
     {
         if (nodo == nullptr)
         {
@@ -85,16 +83,16 @@ private:
         }
         else
         {
-            if (comp(nodo->element, elem))
+            if (this->compararMayor(nodo->element, elem))
             {
                 std::cout << "entrare a la izquierda del arbol\n";
-                this->addElemento(nodo->left, elem, comp);
+                this->addElemento(nodo->left, elem);
 
             }
             else
             {
                 std::cout << "entrare a la derecha del arbol\n";
-                this->addElemento(nodo->right, elem, comp);
+                this->addElemento(nodo->right, elem);
             }
             //balanceamos el arbol, despues de insertar el elemento. Podemos hacer esto, ya que es recursivo la funcion de agregar.
             this->balancear(nodo);

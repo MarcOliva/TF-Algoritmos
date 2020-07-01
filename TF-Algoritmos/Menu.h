@@ -96,7 +96,9 @@ public:
 		case 2: 
 			this->insertardatosTabla(tmp);
 			break;
-		case 3: break;
+		case 3: 
+			this->indexarNuevaColumna(tmp);
+			break;
 		case 4: 
 			tmp->limpiarSeleccionColumnas();
 			this->seleccionarcolumnasTabla(tmp);
@@ -191,6 +193,21 @@ public:
 			} while (aux < 1 || aux > tmp->getNroColumnas());
 			tmp->agregarColumnaSeleccion(--aux);
 		}
+	}
+
+	void indexarNuevaColumna(Tabla* tmp)
+	{
+		do
+		{
+			system("cls");
+			cout << "Ingrese el numero de columna a indexar: ";
+			cin >> opcion;
+		} while (opcion < 1 || opcion > tmp->getNroColumnas());
+
+		tmp->setIndexColumna(--opcion);
+		cout << "Los resultados se veran en la opcion 1 del menu de operaciones.\n";
+		system("pause");
+
 	}
 
 	void exportacionTabla(Tabla* tmp)
