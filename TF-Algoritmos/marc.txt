@@ -1,4 +1,0 @@
-nombre;apellido;edad
-antony;diaz;18
-marc;oliva;23
-sebastian;contreras;20

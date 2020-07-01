@@ -1,4 +1,0 @@
-Codigo;Sexo
-1;M
-2;J
-9;M
