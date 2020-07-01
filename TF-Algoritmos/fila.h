@@ -6,10 +6,8 @@ using namespace std;
 class Fila
 {
     Lista<Columna*, nullptr>* columnas;
-    
-    int indexcompara;
 public:
-    Fila(int indexcomparar = 0) : indexcompara(indexcomparar)
+    Fila()
     {
         this->columnas = new Lista<Columna*, nullptr>();
     }
@@ -26,7 +24,7 @@ public:
     */
     void InsertarDato(Columna* nuevoDato, int nroColumnas)
     {
-        if( (int)this->columnas->size() < nroColumnas )
+        if ((int)this->columnas->size() < nroColumnas)
         {
             //this->columnas->agregar_final(nuevoDato);
             this->columnas->agregar_final(nuevoDato);
@@ -34,41 +32,41 @@ public:
         //si no: se retorna un mensaje de error, para controlar el programa. Posible mensaje: "se llego al limite de columnas".
     }
 
-    bool compararMayor( Fila *otro )
+    bool compararMayor(Fila* otro, int indexcomparar)
     {
-        Columna* current = this->getColumnaporIndice(this->indexcompara);
-        Columna* other = otro->getColumnaporIndice(this->indexcompara);
+        Columna* current = this->getColumnaporIndice(indexcomparar);
+        Columna* other = otro->getColumnaporIndice(indexcomparar);
 
         std::cout << "Dato del current: "; this->imprimirColumna(current); std::cout << '\n';
-        std::cout << "Dato del other: "; this->imprimirColumna(other); std::cout << '\n'; 
+        std::cout << "Dato del other: "; this->imprimirColumna(other); std::cout << '\n';
 
         bool dec = false;
-        if ( current->getTipo() == other->getTipo() )
+        if (current->getTipo() == other->getTipo())
         {
-            switch ( current->getTipo() )
+            switch (current->getTipo())
             {
             case Tipo::boolean:
-                if ( ((ColumnaBool*)current)->getDato() > ((ColumnaBool*)other)->getDato() ) dec = true;
+                if (((ColumnaBool*)current)->getDato() > ((ColumnaBool*)other)->getDato()) dec = true;
                 else dec = false;
 
                 break;
-            case Tipo::integer:      
-                if ( ((ColumnaInt*)current)->getDato() > ((ColumnaInt*)other)->getDato() ) dec = true;
+            case Tipo::integer:
+                if (((ColumnaInt*)current)->getDato() > ((ColumnaInt*)other)->getDato()) dec = true;
                 else dec = false;
 
                 break;
             case Tipo::decimal:
-                if ( ((ColumnaDecimal*)current)->getDato() > ((ColumnaDecimal*)other)->getDato() ) dec = true;
+                if (((ColumnaDecimal*)current)->getDato() > ((ColumnaDecimal*)other)->getDato()) dec = true;
                 else dec = false;
 
                 break;
             case Tipo::caracter:
-                if ( ((ColumnaCaracter*)current)->getDato() > ((ColumnaCaracter*)other)->getDato() ) dec = true;
+                if (((ColumnaCaracter*)current)->getDato() > ((ColumnaCaracter*)other)->getDato()) dec = true;
                 else dec = false;
 
                 break;
             case Tipo::cadena:
-                if ( ((ColumnaString*)current)->getDato() > ((ColumnaString*)other)->getDato() ) dec = true;
+                if (((ColumnaString*)current)->getDato() > ((ColumnaString*)other)->getDato()) dec = true;
                 else dec = false;
 
                 break;
@@ -80,6 +78,7 @@ public:
         return dec;
     }
 
+    /*
     bool operator < ( Fila otro )
     {
         //Columna* current = this->columnas->get_pos(indexcompara);
@@ -87,7 +86,7 @@ public:
         Columna* other = otro.getColumnaporIndice(indexcompara);
 
         std::cout << "Dato del current: "; this->imprimirColumna(current); std::cout << '\n';
-        std::cout << "Dato del other: "; this->imprimirColumna(other); std::cout << '\n'; 
+        std::cout << "Dato del other: "; this->imprimirColumna(other); std::cout << '\n';
 
         bool dec = false;
         if ( current->getTipo() == other->getTipo() )
@@ -99,7 +98,7 @@ public:
                 else dec = false;
 
                 break;
-            case Tipo::integer:      
+            case Tipo::integer:
                 if ( ((ColumnaInt*)current)->getDato() < ((ColumnaInt*)other)->getDato() ) dec = true;
                 else dec = false;
 
@@ -126,6 +125,7 @@ public:
 
         return dec;
     }
+    */
 
     Columna* getColumnaporIndice(int indice)
     {
@@ -135,10 +135,10 @@ public:
 
     void imprimirFila()
     {
-        for ( Columna* x : *columnas )
+        for (Columna* x : *columnas)
         {
             this->imprimirColumna(x);
-            std::cout << '\t';
+            std::cout << ' ';
         }
     }
 
@@ -153,35 +153,35 @@ public:
             }
         }
     }
-    
+
     void imprimirColumna(Columna* x)
     {
-        if ( x == nullptr ) return;
-        switch ( x->getTipo() )
-            {
-            case Tipo::boolean:
-                std::cout << ( ((ColumnaBool*)x)->getDato() );
+        if (x == nullptr) return;
+        switch (x->getTipo())
+        {
+        case Tipo::boolean:
+            std::cout << (((ColumnaBool*)x)->getDato());
 
-                break;
-            case Tipo::integer:      
-                std::cout << ( ((ColumnaInt*)x)->getDato() );
+            break;
+        case Tipo::integer:
+            std::cout << (((ColumnaInt*)x)->getDato());
 
-                break;
-            case Tipo::decimal:
-                std::cout << ( ((ColumnaDecimal*)x)->getDato() );
+            break;
+        case Tipo::decimal:
+            std::cout << (((ColumnaDecimal*)x)->getDato());
 
-                break;
-            case Tipo::caracter:
-                std::cout << ( ((ColumnaCaracter*)x)->getDato() );
+            break;
+        case Tipo::caracter:
+            std::cout << (((ColumnaCaracter*)x)->getDato());
 
-                break;
-            case Tipo::cadena:
-                std::cout << ( ((ColumnaString*)x)->getDato() );
+            break;
+        case Tipo::cadena:
+            std::cout << (((ColumnaString*)x)->getDato());
 
-                break;
-            default:
-                break;
-            }
+            break;
+        default:
+            break;
+        }
     }
 
     string exportarFila()
@@ -192,7 +192,7 @@ public:
         {
             tmp += this->exportarColumna(x);
             ++n;
-            if(n < this->columnas->size())  tmp += ';';
+            if (n < this->columnas->size())  tmp += ';';
         }
         return tmp;
     }
@@ -203,19 +203,19 @@ private:
         if ( cols == nullptr ) return;
 
         Columna* aux = cols->get_pos(index);
-        
+
         if( aux == nullptr ) return;
 
         if( aux->getTipo() == dato->getTipo() )
         {
             switch (aux->getTipo())
             {
-                
+
             case Tipo::boolean:
                 ((ColumnaBool*)aux)->setDato(((ColumnaBool*)dato)->getDato());
                 break;
-                
-            case Tipo::integer:  
+
+            case Tipo::integer:
                 ((ColumnaInt*)aux)->setDato(((ColumnaInt*)dato)->getDato());
                 break;
 
@@ -223,7 +223,7 @@ private:
                 ((ColumnaDecimal*)aux)->setDato(((ColumnaDecimal*)dato)->getDato());
                 break;
 
-            case Tipo::caracter:  
+            case Tipo::caracter:
             ((ColumnaCaracter*)aux)->setDato(((ColumnaCaracter*)dato)->getDato());
             break;
 

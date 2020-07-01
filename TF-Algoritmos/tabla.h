@@ -12,12 +12,18 @@ private:
     Lista<int, -1>* selectColumnas;
     int nroColumnas;
     int indexColumna;
+    function<bool(Fila*, Fila*)> comparar;
 public:
     Tabla(std::string name, int nrocols, Lista<ColumnaNombre*, nullptr>* nombresCols = nullptr, int indexCol = 0, 
         function<Fila(Fila*)> _key = [](Fila* a) { return (*a); })
         : nombre(name), nroColumnas(nrocols), indexColumna(indexCol)
     {
         this->nombresColumnas = new Lista<ColumnaNombre*, nullptr>();
+
+        comparar = [indexCol](Fila* mayor, Fila* menor) -> bool
+        {
+            return mayor->compararMayor(menor, indexCol);
+        };
 
         this->datosArbol = new ABB<Fila*, Fila, nullptr>(_key);
         
@@ -69,18 +75,18 @@ public:
         
     }
 
-    bool InsertarFila( Lista<string*, nullptr> * fila )
+    bool InsertarFila(Lista<string*, nullptr>* fila)
     {
-        Fila* nuevafila = new Fila(this->indexColumna);
+        Fila* nuevafila = new Fila();
         //cout << "LLego hasta aqui 2\n";
         int index = 0; bool dec = true;
-        for( string* s : *fila )
+        for (string* s : *fila)
         {
             //cout << "LLego hasta aqui 3\n";
             //cout << s->size() << '\n';
             Columna* nuevo = this->validacion(s, this->nombresColumnas->get_pos(index++)->getTipo());
             //cout << "LLego hasta aqui\n";
-            if( nuevo != nullptr ) nuevafila->InsertarDato(nuevo, this->nroColumnas);
+            if (nuevo != nullptr) nuevafila->InsertarDato(nuevo, this->nroColumnas);
             else
             {
                 dec = false; break;
@@ -88,7 +94,7 @@ public:
             //cout << "LLego hasta aqui\n";
         }
 
-        if (dec) this->datosArbol->addElemento(nuevafila);
+        if (dec) this->datosArbol->addElemento(nuevafila, this->comparar);
         return dec;
     }
 

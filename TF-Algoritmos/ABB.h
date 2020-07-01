@@ -22,7 +22,7 @@ private:
     int length;
 public:
     ABB(function<R(T)> _key = [](T a) { return a; })
-    : key(_key), root(nullptr), length(0) 
+        : key(_key), root(nullptr), length(0)
     {
         //this->compararMayor = [&](T mayor, T menor) { return ( _key(mayor) > _key(menor) ); };
     }
@@ -42,12 +42,12 @@ public:
         return this->length;
     }
 
-    void addElemento(T elem)
+    void addElemento(T elem, function<bool(T, T)> comp)
     {
-        this->addElemento(this->root, elem);
+        this->addElemento(this->root, elem, comp);
     }
 
-    void inOrder( function<void(T)> proc )
+    void inOrder(function<void(T)> proc)
     {
         this->inOrder(this->root, proc);
     }
@@ -56,54 +56,54 @@ public:
     {
         this->eliminar(this->root, elem);
     }
-//------------------------------METODOS PRIVADOS----------------------------------//
+    //------------------------------METODOS PRIVADOS----------------------------------//
 private:
-    void clear( Nodo*& nodo )
+    void clear(Nodo*& nodo)
     {
-        if( nodo != nullptr )
+        if (nodo != nullptr)
         {
             this->clear(nodo->right);
             this->clear(nodo->left);
 
             delete nodo; //para eliminar el objeto de la memoria
-            
+
             nodo = nullptr; //para que ya no apunte a memoria liberada
         }
     }
 
     int height(Nodo* nodo)
     {
-        return ( nodo == nullptr ? 0 : nodo->levels );
+        return (nodo == nullptr ? 0 : nodo->levels);
     }
 
-    void addElemento(Nodo* & nodo, T elem)
+    void addElemento(Nodo*& nodo, T elem, function<bool(T, T)> comp)
     {
-        if( nodo == nullptr )
+        if (nodo == nullptr)
         {
             nodo = new Nodo(elem);
             this->length++;
         }
-        else 
+        else
         {
-            if (nodo->element->compararMayor(elem))
+            if (comp(nodo->element, elem))
             {
                 std::cout << "entrare a la izquierda del arbol\n";
-                this->addElemento(nodo->left, elem);
-                
+                this->addElemento(nodo->left, elem, comp);
+
             }
             else
             {
                 std::cout << "entrare a la derecha del arbol\n";
-                this->addElemento(nodo->right, elem);
+                this->addElemento(nodo->right, elem, comp);
             }
             //balanceamos el arbol, despues de insertar el elemento. Podemos hacer esto, ya que es recursivo la funcion de agregar.
-            this->balancear(nodo); 
+            this->balancear(nodo);
         }
     }
 
     void inOrder(Nodo* nodo, function<void(T)> proc)
     {
-        if ( nodo != nullptr )
+        if (nodo != nullptr)
         {
             this->inOrder(nodo->left, proc);
             std::cout << "level: " << nodo->levels << " -> ";
@@ -114,19 +114,19 @@ private:
 
     void eliminar(Nodo*& nodo, T elem)
     {
-        if( nodo == nullptr ) return;
+        if (nodo == nullptr) return;
 
         else if (nodo->element->compararMayor(elem)) this->eliminar(nodo->left, elem);
         else if (elem->compararMayor(nodo->element)) this->eliminar(nodo->right, elem);
         //caso que tenga dos hijos
-        else if ( nodo->left != nullptr && nodo->right != nullptr )
+        else if (nodo->left != nullptr && nodo->right != nullptr)
         {
             nodo->left = this->removeMax(nodo->left, nodo);
         }
         else
         {
             Nodo* aux = nodo;
-            nodo = ( nodo->left != nullptr ) ? nodo->left : nodo->right; 
+            nodo = (nodo->left != nullptr) ? nodo->left : nodo->right;
             delete aux;
         }
 
@@ -135,12 +135,12 @@ private:
 
     Nodo* removeMax(Nodo*& nodo, Nodo* elementoCambiar)
     {
-        if ( nodo->right != nullptr )
+        if (nodo->right != nullptr)
         {
             nodo->right = this->removeMax(nodo->right, elementoCambiar);
         }
         else
-        {  
+        {
             elementoCambiar->element = nodo->element;
             Nodo* hl = nodo->left;
             delete nodo; nodo = nullptr;
@@ -150,30 +150,30 @@ private:
         return nodo;
     }
 
-    T findMax(Nodo * nodo)
+    T findMax(Nodo* nodo)
     {
-        if ( nodo->right == nullptr ) return nodo->element;
-        return this->findMax( nodo->right);
+        if (nodo->right == nullptr) return nodo->element;
+        return this->findMax(nodo->right);
     }
 
-    T findMin(Nodo * nodo)
+    T findMin(Nodo* nodo)
     {
-        if ( nodo->left == nullptr ) return nodo->element;
-        return this->findMin( nodo->left);
+        if (nodo->left == nullptr) return nodo->element;
+        return this->findMin(nodo->left);
     }
 
     //------EMPIEZA----------Operaciones de balanceo-------------------------------//
     void updatelevel(Nodo* nodo)
     {
-        if ( nodo != nullptr )
+        if (nodo != nullptr)
         {
             int hl = this->height(nodo->left);
             int hr = this->height(nodo->right);
             //actualizamos a (la altura del hijo mas alto) mas 1.
-            nodo->levels = ( hl > hr ? hl : hr ) + 1;
+            nodo->levels = (hl > hr ? hl : hr) + 1;
         }
     }
-    
+
     void rotarLeft(Nodo*& nodo)
     {
         //auxiliar que apunte al hijo derecho para no perderlo
@@ -195,7 +195,7 @@ private:
 
     //la misma logica que rotar a la izquierda, pero todo los cambios reflejados.
     void rotarRight(Nodo*& nodo)
-    {   
+    {
         //auxiliar que apunte al hijo izquierdo para no perderlo
         Nodo* aux = nodo->left;
 
@@ -215,32 +215,32 @@ private:
 
     void balancear(Nodo*& nodo)
     {
-        if ( nodo == nullptr ) return;
+        if (nodo == nullptr) return;
 
         int hl = this->height(nodo->left);
         int hr = this->height(nodo->right);
 
         //si se cumple siginifica que el nodo es pesado a la izquierda.
-        if ( hl - hr > 1 )
+        if (hl - hr > 1)
         {
             hl = this->height(nodo->left->left);
             hr = this->height(nodo->left->right);
 
             //si el hijo derecho del hijo izquierdo del nodo es MAYOR en altura(levels) al hijo izquierdo del hijo izquierdo del nodo.
-            if( hl < hr )
+            if (hl < hr)
             {
                 this->rotarLeft(nodo->left);
             }
             this->rotarRight(nodo);
         }
         //si se cumple significa que esta pesado a la derecha.
-        else if ( hl - hr < -1 )
+        else if (hl - hr < -1)
         {
             hl = this->height(nodo->right->left);
             hr = this->height(nodo->right->right);
 
             //si el hijo izquierdo del hijo derecho del nodo es MAYOR en altura(levels) al hijo derecho del hijo derecho del nodo.
-            if( hl > hr )
+            if (hl > hr)
             {
                 this->rotarRight(nodo->right);
             }
@@ -251,7 +251,7 @@ private:
         {
             this->updatelevel(nodo);
         }
-        
+
     }
     //------TERMINA-----------Operaciones de balanceo-------------------------------//
 };
