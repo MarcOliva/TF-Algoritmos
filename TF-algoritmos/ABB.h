@@ -54,8 +54,68 @@ public:
     {
         this->eliminar(this->root, elem);
     }
+
+    void Mayor_que(function<bool(T)> comparar, function<void(T)> proc)
+    {
+        this->Mayor_que(this->root, comparar, proc);
+    }
+
+    void Menor_que(function<bool(T)> comparar, function<void(T)> proc)
+    {
+        this->Menor_que(this->root, comparar, proc);
+    }
+
+    void Igual_que(function<bool(T)> comparar, function<void(T)> proc)
+    {
+        this->Igual_que(this->root, comparar, proc);
+    }
     //------------------------------METODOS PRIVADOS----------------------------------//
 private:
+
+    void Mayor_que(Nodo* nodo, function<bool(T)> comparar, function<void(T)> proc)
+    {
+        if (nodo == nullptr) return;
+        //val < nodo->element
+        else if (comparar(nodo->element))
+        {
+            Mayor_que(nodo->left, comparar, proc);
+            proc(nodo->element);
+
+            this->inOrder(nodo->right, proc);
+        }
+        else Mayor_que(nodo->right, comparar, proc);
+    }
+
+    void Menor_que(Nodo* nodo, function<bool(T)> comparar, function<void(T)> proc)
+    {
+        if (nodo == nullptr) return;
+        //val > nodo->element
+        else if (comparar(nodo->element))
+        {
+            Menor_que(nodo->right, comparar, proc);
+            proc(nodo->element);
+
+            this->inOrder(nodo->left, proc);
+        }
+        else Menor_que(nodo->left, comparar, proc);
+    }
+
+    void Igual_que(Nodo* nodo, function<bool(T)> comparar, function<void(T)> proc)
+    {
+        if (nodo == nullptr) return;
+        //val == nodo->element
+        else if (comparar(nodo->element))
+        {
+            Igual_que(nodo->right, comparar, proc);
+            proc(nodo->element);
+        }
+        else
+        {
+            Igual_que(nodo->right, comparar, proc);
+            Igual_que(nodo->left, comparar, proc);
+        }
+    }
+
     void clear(Nodo*& nodo)
     {
         if (nodo != nullptr)

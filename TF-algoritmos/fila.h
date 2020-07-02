@@ -78,6 +78,121 @@ public:
         return dec;
     }
 
+    //mayor, menor e igual
+    bool compararEnFiltro(Lista<int, -1>* indexSelectColumnas, Columna* dato, int opcion)
+    {
+        bool dec = true;
+        switch (opcion)
+        {
+        //mayor
+        case 1:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::integer:
+                    if (((ColumnaInt*)tmp)->getDato() > ((ColumnaInt*)dato)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::decimal:
+                    if (((ColumnaDecimal*)tmp)->getDato() > ((ColumnaDecimal*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::caracter:
+                    if (((ColumnaCaracter*)tmp)->getDato() > ((ColumnaCaracter*)tmp)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::cadena:
+                    if (((ColumnaString*)tmp)->getDato() > ((ColumnaString*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
+         
+        //menor
+        case 2:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::integer:
+                    if (((ColumnaInt*)tmp)->getDato() < ((ColumnaInt*)dato)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::decimal:
+                    if (((ColumnaDecimal*)tmp)->getDato() < ((ColumnaDecimal*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::caracter:
+                    if (((ColumnaCaracter*)tmp)->getDato() < ((ColumnaCaracter*)tmp)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::cadena:
+                    if (((ColumnaString*)tmp)->getDato() < ((ColumnaString*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
+        //igual
+        case 3:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::boolean:
+                    if (((ColumnaBool*)tmp)->getDato() == ((ColumnaBool*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::integer:
+                    if (((ColumnaInt*)tmp)->getDato() == ((ColumnaInt*)dato)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::decimal:
+                    if (((ColumnaDecimal*)tmp)->getDato() == ((ColumnaDecimal*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::caracter:
+                    if (((ColumnaCaracter*)tmp)->getDato() == ((ColumnaCaracter*)tmp)->getDato()) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::cadena:
+                    if (((ColumnaString*)tmp)->getDato() == ((ColumnaString*)dato)->getDato()) dec = true;
+                    else dec = false;
+                    break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
+        default:
+            dec = false;
+            break;
+        }
+
+        return dec;
+    }
+
     /*
     bool operator < ( Fila otro )
     {

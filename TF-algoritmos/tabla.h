@@ -105,6 +105,7 @@ public:
     Lista<ColumnaNombre*, nullptr>* getNombresColumnas() {
         return nombresColumnas;
     }
+
     void limpiarSeleccionColumnas()
     {
         delete selectColumnas;
@@ -139,7 +140,32 @@ public:
 
     void FiltrarDatosporColumna(function<Columna(Fila)> func);
 
-    Tabla* OrdenarDatosporColumna(int index);
+    void OrdenarDatosporColumna(int indexCol)
+    {
+        auto lambda = [indexCol](Fila* mayor, Fila* menor) -> bool
+        {
+            return mayor->compararMayor(menor, indexCol);
+        };
+
+        //generamos el nuevo arbol con ayuda del lambda
+        ABB<Fila*, Fila*, nullptr>* nuevoArbol = new ABB<Fila*, Fila*, nullptr>(lambda);
+
+        auto agregar = [&nuevoArbol](Fila* current)
+        {
+            nuevoArbol->addElemento(current);
+        };
+
+        this->datosArbol->inOrder(agregar);
+
+        auto func = [](Fila* current)
+        {
+            current->imprimirFila();
+            std::cout << '\n';
+        };
+
+        //Imprime el nuevo arbol
+        nuevoArbol->inOrder(func);
+    }
 
     void ExportacionTabla(string nombre="default")
     {
@@ -174,25 +200,49 @@ public:
     int getNroFila() { return this->datosArbol->size(); }
 
     int getNroColumnas() { return this->nroColumnas; }
-    void ejecutarFiltro(int opcion) {
-        function<void(Fila*)> mayor;
+
+    Tipo getTipoColumnasSeleccionadas()
+    {
+        int indextmp = this->selectColumnas->get_inicio();
+        if (indextmp == -1) return Tipo::none;
+
+        return this->nombresColumnas->get_pos(indexColumna)->getTipo();
+    }
+
+
+
+    void ejecutarFiltro(int opcion, Columna* datocomparar) {
+        auto func = [](Fila* current)
+        {
+            current->imprimirFila();
+            std::cout << '\n';
+        };
         Lista<int, -1>* aux = this->selectColumnas;
+
+        function<bool(Fila*)>  lambda_filtro = [&aux,opcion, &datocomparar](Fila* current) {
+            if (current->compararEnFiltro(aux, datocomparar, opcion))
+            {
+                return true;
+            }
+            return false;
+        };
+
         switch (opcion)
         {
+        //mayor
         case 1:
-            mayor = [aux,opcion](Fila* current) {
-              /*  if (current->validarCondicion(aux,opcion))
-                {
-                    current->imprimirFila();
-                }*/
-            };
+            this->datosArbol->Mayor_que(lambda_filtro, func);
             break;
-        case 2:break;
-        case 3:break;
+        //menor
+        case 2:
+            this->datosArbol->Menor_que(lambda_filtro, func);
+            break;
+        case 3: //igual
+            this->datosArbol->Igual_que(lambda_filtro, func);
+            break;
         default:
             break;
         }
-
     }
 private:
 
