@@ -18,7 +18,6 @@ public:
 		nombres->agregar_final(new ColumnaNombre(Tipo::integer, "Codigo"));
 		nombres->agregar_final(new ColumnaNombre(Tipo::caracter, "Sexo"));
 		Tabla* mitabla = new Tabla("Alumno", 2, nombres);
-
 		this->mistablas->push_back(mitabla);*/
 		this->pantalla_menu();
 	}
@@ -108,6 +107,10 @@ public:
 
 	void pantalla_operaciones()
 	{
+		if (mistablas->size() < 1) {
+			cout << "Tienes que crear una tabla primero." << endl;
+			return;
+		}
 		int index = ((int)this->mistablas->size() > 1) ? this->conquetablaTrabajar() : 0;
 		Tabla* tmp = this->mistablas->at(index);
 

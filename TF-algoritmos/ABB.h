@@ -106,6 +106,7 @@ private:
             this->inOrder(nodo->left, proc);
             std::cout << "level: " << nodo->levels << " -> ";
             proc(nodo->element);
+            std::cout << '\t';
             this->inOrder(nodo->right, proc);
         }
     }
