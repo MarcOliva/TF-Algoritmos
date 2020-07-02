@@ -271,17 +271,41 @@ public:
 
 	void seleccionarcolumnasTabla(Tabla* tmp)
 	{
-		do
-		{
+		/*do
+		{*/
 			system("cls");
 			cout << "Tabla: " << tmp->getNombre() << '\n';
 			cout << "Numero de columnas: " << tmp->getNroColumnas() << '\n';
+			cout << "-----------------------------------------------------"<<endl;
+			tmp->datosColumnas();
+			cout << "-----------------------------------------------------"<<endl;
 
-			cout << "Ingrese el numero de columnas a seleccionar: ";
-			cin >> opcion;
-		} while (opcion < 1 || opcion > tmp->getNroColumnas());
 
-		while (opcion--)
+			do
+			{
+				cout << "Quieres seleccionar el index ? (y/n):";
+				cin >> opcion;
+			} while (opcion<0 || opcion>3);
+			
+
+		//} while (opcion < 1 || opcion > tmp->getNroColumnas());
+			int numColumn;
+			if (opcion == 0)return;
+			
+			if (opcion==1)
+			{
+				cout << "Ingrese numero de columna :" << endl;
+				cin >> numColumn;
+				//aqui registrar el numero de columna seleccionado
+				do
+				{
+					cout << "Quieres agregar otra columna?  :" << endl;
+					cin >> opcion;
+				} while (opcion < 0 || opcion>3);
+				if (opcion == 0)return;
+			}
+			
+		/*while (opcion--)
 		{
 			int aux = 1;
 			do 
@@ -290,7 +314,7 @@ public:
 				cout << "Ingrese el numero de columna: "; cin >> aux;
 			} while (aux < 1 || aux > tmp->getNroColumnas());
 			tmp->agregarColumnaSeleccion(--aux);
-		}
+		}*/
 	}
 
 	void indexarNuevaColumna(Tabla* tmp)
