@@ -1,4 +1,4 @@
-Codigo;Nombre
-1;sebastian
-2;marc
-3;anthony
+NOMBRE;APELLIDO;EDAD
+Anthony;Diaz;20
+Marc;Oliva;23
+Sebastian;Contreras;20

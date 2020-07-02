@@ -86,7 +86,7 @@ public:
 		{
 			cout << "Nombre columna " << i +1 << endl;
 			cin >> nameColumn;
-			cout << "Tipo columna (1:boolean, 2: interger , 3: decimal , 4: caracter , 5 : cadena) " + i << endl;
+			cout << "Tipo columna (1:boolean, 2: interger , 3: decimal , 4: caracter , 5 : cadena)" << endl;
 			cin >> tipo;
 			//boolean, integer, decimal, caracter, cadena
 			nombresColumnas->agregar_final(new ColumnaNombre((Tipo)tipo, nameColumn));
