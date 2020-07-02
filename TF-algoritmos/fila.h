@@ -185,6 +185,180 @@ public:
                 if (!dec) break;
             }
             break;
+        case 4:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::boolean:
+                    if (to_string(((ColumnaBool*)tmp)->getDato()).at(0) ==
+                        to_string(((ColumnaBool*)dato)->getDato()).at(0)) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::integer:
+                    if (to_string(((ColumnaInt*)tmp)->getDato()).at(0) ==
+                        to_string(((ColumnaInt*)dato)->getDato()).at(0)) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::decimal:
+                    if (to_string(((ColumnaDecimal*)tmp)->getDato()).at(0) ==
+                        to_string(((ColumnaDecimal*)dato)->getDato()).at(0)) dec = true;
+                    else dec = false;
+                    break;
+                case Tipo::caracter:
+                    if (to_string(((ColumnaCaracter*)tmp)->getDato()).at(0) ==
+                        to_string(((ColumnaCaracter*)dato)->getDato()).at(0)) dec = true;
+                    else dec = false;
+
+                    break;
+                case Tipo::cadena:
+                    if (((ColumnaString*)tmp)->getDato().at(0) ==
+                        ((ColumnaString*)dato)->getDato().at(0)) dec = true;
+                    else dec = false;
+                    break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
+        case 5:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::boolean:
+                {
+                    string uno = to_string(((ColumnaBool*)dato)->getDato());
+                    string dos = (to_string(((ColumnaBool*)tmp)->getDato()).substr(to_string(((ColumnaBool*)tmp)->getDato()).size() - 1, to_string(((ColumnaBool*)tmp)->getDato()).size()));
+                    if (uno == dos
+                        ) dec = true;
+                    else dec = false;
+
+                }
+                    break;
+                case Tipo::integer:
+                {
+                    string uno = to_string(((ColumnaInt*)dato)->getDato());
+                    string dos = (to_string(((ColumnaInt*)tmp)->getDato()).substr(to_string(((ColumnaInt*)tmp)->getDato()).size() - 1, to_string(((ColumnaInt*)tmp)->getDato()).size()));
+                    if (uno==dos
+                        ) dec = true;
+                    else dec = false;
+
+                }
+                   
+                    break;
+                case Tipo::decimal:
+                {
+                    string uno = to_string(((ColumnaDecimal*)dato)->getDato());
+                    string dos = (to_string(((ColumnaDecimal*)tmp)->getDato()).substr(to_string(((ColumnaDecimal*)tmp)->getDato()).size() - 1, to_string(((ColumnaDecimal*)tmp)->getDato()).size()));
+                    if (uno==dos
+                        ) dec = true;
+                    else dec = false;
+                }
+
+                    
+                    break;
+                case Tipo::caracter:
+                {
+                    string uno = to_string(((ColumnaCaracter*)dato)->getDato());
+                    string dos = (to_string(((ColumnaCaracter*)tmp)->getDato()).substr(to_string(((ColumnaCaracter*)tmp)->getDato()).size() - 1, to_string(((ColumnaCaracter*)tmp)->getDato()).size()));
+                    if (uno==
+                       dos
+                        )
+                        dec = true;
+                    else dec = false;
+                }
+                  
+
+                    break;
+                case Tipo::cadena: {
+                    string uno =((ColumnaString*)dato)->getDato();
+                    string dos = ((ColumnaString*)tmp)->getDato().substr(((ColumnaString*)tmp)->getDato().size() - 1, ((ColumnaString*)tmp)->getDato().size());
+                    if ( uno == dos
+                        )
+                        dec = true;
+                    else dec = false;
+                }
+                    break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
+        case 6:
+            for (int index : *indexSelectColumnas)
+            {
+                Columna* tmp = this->getColumnaporIndice(index);
+                switch (tmp->getTipo())
+                {
+                case Tipo::boolean:
+                {
+                    string uno = to_string(((ColumnaBool*)dato)->getDato());
+                    string dos = (to_string(((ColumnaBool*)tmp)->getDato()).substr(to_string(((ColumnaBool*)tmp)->getDato()).size() - 1, to_string(((ColumnaBool*)tmp)->getDato()).size()));
+                    if (uno == dos
+                        ) dec = true;
+                    else dec = false;
+
+                }
+                break;
+                case Tipo::integer:
+                {
+                    string uno = to_string(((ColumnaInt*)dato)->getDato());
+                    string dos = (to_string(((ColumnaInt*)tmp)->getDato()).substr(to_string(((ColumnaInt*)tmp)->getDato()).size() - 1, to_string(((ColumnaInt*)tmp)->getDato()).size()));
+                    if (uno == dos
+                        ) dec = true;
+                    else dec = false;
+
+                }
+
+                break;
+                case Tipo::decimal:
+                {
+                    string uno = to_string(((ColumnaDecimal*)dato)->getDato());
+                    string dos = (to_string(((ColumnaDecimal*)tmp)->getDato()).substr(to_string(((ColumnaDecimal*)tmp)->getDato()).size() - 1, to_string(((ColumnaDecimal*)tmp)->getDato()).size()));
+                    if (uno == dos
+                        ) dec = true;
+                    else dec = false;
+                }
+
+
+                break;
+                case Tipo::caracter:
+                {
+                    string uno = to_string(((ColumnaCaracter*)dato)->getDato());
+                    string dos = (to_string(((ColumnaCaracter*)tmp)->getDato()).substr(to_string(((ColumnaCaracter*)tmp)->getDato()).size() - 1, to_string(((ColumnaCaracter*)tmp)->getDato()).size()));
+                    if (uno ==
+                        dos
+                        )
+                        dec = true;
+                    else dec = false;
+                }
+
+
+                break;
+                case Tipo::cadena: {
+                    string uno = ((ColumnaString*)dato)->getDato();
+                    string dos = ((ColumnaString*)tmp)->getDato().substr(((ColumnaString*)tmp)->getDato().size() - 1, ((ColumnaString*)tmp)->getDato().size());
+                    if (uno == dos
+                        )
+                        dec = true;
+                    else dec = false;
+                }
+                                 break;
+                default:
+                    dec = false;
+                    break;
+                }
+                if (!dec) break;
+            }
+            break;
         default:
             dec = false;
             break;
