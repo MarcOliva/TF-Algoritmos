@@ -10,6 +10,8 @@ class Menu
 private:
 	int opcion;
 	vector<Tabla*>* mistablas;
+	bool escogido;
+	int indexTablaescogida = -1;
 public:
 	Menu()
 	{
@@ -109,9 +111,10 @@ public:
 	{
 		if (mistablas->size() < 1) {
 			cout << "Tienes que crear una tabla primero." << endl;
+			system("pause");
 			return;
 		}
-		int index = ((int)this->mistablas->size() > 1) ? this->conquetablaTrabajar() : 0;
+		int index = ((int)this->mistablas->size() > 1) ? (this->escogido && this->indexTablaescogida >= 0) ? this->indexTablaescogida : this->conquetablaTrabajar() : 0;
 		Tabla* tmp = this->mistablas->at(index);
 
 		do
@@ -160,7 +163,10 @@ public:
 
 		if (opcion == 8) return;
 		else this->pantalla_operaciones();
+		this->escogido = false;
+		this->indexTablaescogida = -1;
 	}
+	
 	void pantallaFiltros(Tabla * tabla) {
 		do
 		{
@@ -192,6 +198,7 @@ public:
 		do
 		{
 			system("cls");
+			this->ImprimirInfoTablaActual(tmp);
 			cout << "Ingrese el numero de la columna para ordenar:\n";
 			cin >> opcion;
 		} while (opcion < 1 || opcion > tmp->getNroColumnas());
@@ -205,10 +212,9 @@ public:
 		do
 		{
 			system("cls");
-			cout << "Tabla: " << tmp->getNombre() << '\n';
-			cout << "Numero de columnas: " << tmp->getNroColumnas() << '\n';
-			cout << "Numero de Filas: " << tmp->getNroFila() << '\n';
+			this->ImprimirInfoTablaActual(tmp);
 			cout << "\n\n";
+			cout << "Numero de Filas: " << tmp->getNroFila() << '\n';
 
 			tmp->imprimirTabla();
 
@@ -227,6 +233,7 @@ public:
 		do
 		{
 			system("cls");
+			this->ImprimirInfoTablaActual(tmp);
 			cout << "*************************************************************" << endl;
 			cout << "OBS: Se permite ingresar 10 filas como maximo de golpe\n";
 			cout << "Use el formato CSV (delimitar con ;) para imsertar las filas\n";
@@ -271,50 +278,43 @@ public:
 
 	void seleccionarcolumnasTabla(Tabla* tmp)
 	{
-		/*do
-		{*/
-			system("cls");
-			cout << "Tabla: " << tmp->getNombre() << '\n';
-			cout << "Numero de columnas: " << tmp->getNroColumnas() << '\n';
-			cout << "-----------------------------------------------------"<<endl;
-			//tmp->datosColumnas();
-			cout << "-----------------------------------------------------"<<endl;
 
-
-			do
-			{
-				cout << "Quieres seleccionar el index ? (y/n):";
-				cin >> opcion;
-			} while (opcion<0 || opcion>3);
+		system("cls");
+		this->ImprimirInfoTablaActual(tmp);
+		do
+		{
+			cout << "Quieres seleccionar el index ? (si: 1/no: 0):";
+			cin >> opcion;
+		} while (opcion < 0 || opcion > 1);
 			
+		if (opcion)
+		{
+			tmp->agregarColumnaSeleccion(tmp->getNroIndex());
+			cout << "Se agrego correctamente\n";
+		}
 
-		//} while (opcion < 1 || opcion > tmp->getNroColumnas());
+			
+		do
+		{
+			cout << "Quieres agregar otra columna? (si: 1/no: 0):" << endl;
+			cin >> opcion;
+		} while (opcion < 0 || opcion > 1);
+
+		if (opcion)
+		{
 			int numColumn;
-			if (opcion == 0)return;
-			
-			if (opcion==1)
+			do
 			{
 				cout << "Ingrese numero de columna :" << endl;
 				cin >> numColumn;
-				//aqui registrar el numero de columna seleccionado
-				do
-				{
-					cout << "Quieres agregar otra columna?  :" << endl;
-					cin >> opcion;
-				} while (opcion < 0 || opcion>3);
-				if (opcion == 0)return;
-			}
-			
-		/*while (opcion--)
-		{
-			int aux = 1;
-			do 
-			{
+			} while (numColumn < 1 || numColumn > tmp->getNroColumnas());
+				
+			tmp->agregarColumnaSeleccion(--numColumn);
+		}
 
-				cout << "Ingrese el numero de columna: "; cin >> aux;
-			} while (aux < 1 || aux > tmp->getNroColumnas());
-			tmp->agregarColumnaSeleccion(--aux);
-		}*/
+		cout << "\n\n";
+		tmp->imprimirTablaconColumnasSeleccionadas();
+		system("pause");
 	}
 
 	void indexarNuevaColumna(Tabla* tmp)
@@ -322,6 +322,7 @@ public:
 		do
 		{
 			system("cls");
+			this->ImprimirInfoTablaActual(tmp);
 			cout << "Ingrese el numero de columna a indexar: ";
 			cin >> opcion;
 		} while (opcion < 1 || opcion > tmp->getNroColumnas());
@@ -337,7 +338,7 @@ public:
 		do
 		{
 			system("cls");
-			cout << "Tabla: " << tmp->getNombre() << '\n';
+			this->ImprimirInfoTablaActual(tmp);
 			cout << "1) Ingrese nombre del archivo\n";
 			cout << "2) Usar nombre de tabla para nombrar al archivo\n";
 			cout << "3) Regresar\n";
@@ -362,10 +363,18 @@ public:
 
 	int conquetablaTrabajar()
 	{
-		cout << "llegue a conquetablaTrabajar";
-		return 0;
+		do
+		{
+			system("cls");
+			this->MostrarTablas();
+			cout << "Ingrese el numero de tabla a usar: ";
+			cin >> opcion;
+		} while (opcion < 1 || opcion >(int)mistablas->size());
+		--opcion;
+		this->escogido = true;
+		this->indexTablaescogida = opcion;
+		return opcion;
 	}
-
 
 private:
 	void convertirStringToListaString(string datosCSV, Lista<string*, nullptr>*& fila, int cntcolumnas)
@@ -503,5 +512,25 @@ private:
 		}
 		//cout << "LLego hasta aqui 5\n";
 		return nuevo;
+	}
+
+	void ImprimirInfoTablaActual(Tabla* tmp)
+	{
+		cout << "Tabla: " << tmp->getNombre() << '\n';
+		cout << "Numero de columnas: " << tmp->getNroColumnas() << '\n';
+		cout << "-----------------------------------------------------" << endl;
+		tmp->ImprimirInfo();
+		cout << "-----------------------------------------------------" << endl;
+	}
+
+	void MostrarTablas()
+	{
+		int n = 0;
+		for (auto curr : *mistablas)
+		{
+			cout << "Tabla " << ++n << '\n';
+			this->ImprimirInfoTablaActual(curr);
+			cout << "\n\n";
+		}
 	}
 };

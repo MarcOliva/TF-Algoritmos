@@ -43,12 +43,26 @@ public:
 
     void imprimirTabla()
     {
+        std::cout << "Columnas -> ";
+        for (auto x : *nombresColumnas)
+            std::cout << x->getNombre()<<"|"<< '\t';
+        std::cout << '\n';        
+        auto func = [](Fila* current)
+        {
+            current->imprimirFila();
+            std::cout <<"|"<< '\n';
+        };
+        this->datosArbol->inOrder(func);
+    }
+
+    void imprimirTablaconColumnasSeleccionadas()
+    {
         if (this->selectColumnas != nullptr && this->selectColumnas->size() > 0)
         {
             for (auto x : *selectColumnas)
-                if( x >= 0 ) std::cout << this->nombresColumnas->get_pos(x)->getNombre() << '\t';
+                if (x >= 0) std::cout << this->nombresColumnas->get_pos(x)->getNombre() << '\t';
             std::cout << '\n';
-            
+
             Lista<int, -1>* aux = this->selectColumnas;
             auto func = [aux](Fila* current)
             {
@@ -56,22 +70,7 @@ public:
                 std::cout << '\n';
             };
             this->datosArbol->inOrder(func);
-            
         }
-        else
-        {
-            std::cout << "Columnas -> ";
-            for (auto x : *nombresColumnas)
-                std::cout << x->getNombre()<<"|"<< '\t';
-            std::cout << '\n';        
-            auto func = [](Fila* current)
-            {
-                current->imprimirFila();
-                std::cout <<"|"<< '\n';
-            };
-            this->datosArbol->inOrder(func);
-        }
-        
     }
 
     bool InsertarFila(Lista<string*, nullptr>* fila)
