@@ -96,10 +96,6 @@ public:
         if (dec) this->datosArbol->addElemento(nuevafila);
         return dec;
     }
-    void datosColumnas() {        
-        for (auto x : *nombresColumnas)
-            std::cout <<x->getTipo() <<x->getNombre()<< (indexColumna==x->getTipo())? "(Index)" : " " <<  '\n';
-    }
     void agregarColumnaSeleccion(int index)
     {
         this->selectColumnas->agregar_final(index);

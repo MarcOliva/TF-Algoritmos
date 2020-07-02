@@ -277,7 +277,7 @@ public:
 			cout << "Tabla: " << tmp->getNombre() << '\n';
 			cout << "Numero de columnas: " << tmp->getNroColumnas() << '\n';
 			cout << "-----------------------------------------------------"<<endl;
-			tmp->datosColumnas();
+			//tmp->datosColumnas();
 			cout << "-----------------------------------------------------"<<endl;
 
 
