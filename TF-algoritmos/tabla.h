@@ -48,14 +48,14 @@ public:
 
     void imprimirTabla()
     {
-        std::cout << "Columnas -> ";
+        std::cout << "Nivel    -> ";
         for (auto x : *nombresColumnas)
             std::cout << x->getNombre()<<"|"<< '\t';
         std::cout << '\n';        
         auto func = [](Fila* current)
         {
             current->imprimirFila();
-            std::cout <<"|"<< '\n';
+            std::cout <<'\n';
         };
         this->datosArbol->inOrder(func);
     }

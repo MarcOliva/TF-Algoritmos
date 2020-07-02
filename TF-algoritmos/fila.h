@@ -440,7 +440,7 @@ public:
         for (Columna* x : *columnas)
         {
             this->imprimirColumna(x);
-            std::cout << ' ';
+            std::cout << "|"<< '\t';
         }
     }
 
@@ -466,7 +466,10 @@ public:
 
             break;
         case Tipo::integer:
+        {
+        std::cout << '\t';
             std::cout << (((ColumnaInt*)x)->getDato());
+        }         
 
             break;
         case Tipo::decimal:
