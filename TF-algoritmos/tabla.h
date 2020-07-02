@@ -101,6 +101,7 @@ public:
     {
         this->selectColumnas->agregar_final(index);
     }
+    
     Lista<ColumnaNombre*, nullptr>* getNombresColumnas() {
         return nombresColumnas;
     }
@@ -200,6 +201,8 @@ public:
 
     int getNroColumnas() { return this->nroColumnas; }
 
+    int getNroIndex() { return this->indexColumna; }
+
     Tipo getTipoColumnasSeleccionadas()
     {
         int indextmp = this->selectColumnas->get_inicio();
@@ -208,7 +211,16 @@ public:
         return this->nombresColumnas->get_pos(indexColumna)->getTipo();
     }
 
-
+    void ImprimirInfo()
+    {
+        int n = 0;
+        for (auto curr : *nombresColumnas)
+        {
+            if (n == this->getNroIndex()) cout << "[Columna Index] -> ";
+            cout << "Columna " << (n+1) << " (Nombre: " << curr->getNombre() << ", Tipo: " << this->ImprimirTipo(curr->getTipo()) << ")\n";
+            ++n;
+        }
+    }
 
     void ejecutarFiltro(int opcion, Columna* datocomparar) {
         auto func = [](Fila* current)
@@ -351,4 +363,31 @@ private:
     void ejecutarFiltro() {
       //logica
     }
+
+    string ImprimirTipo(Tipo tp)
+    {
+        switch (tp)
+        {
+        case none:
+            break;
+        case boolean:
+            return "Booleano";
+            break;
+        case integer:
+            return "Integer";
+            break;
+        case decimal:
+            return "Decimal";
+            break;
+        case caracter:
+            return "Caracter";
+            break;
+        case cadena:
+            return "Cadena";
+            break;
+        default:
+            break;
+        }
+    }
+
 };
