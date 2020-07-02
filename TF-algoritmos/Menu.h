@@ -145,7 +145,9 @@ public:
 		case 5: 
 			this->pantallaFiltros(tmp);
 			break;
-		case 6: break;
+		case 6: 
+			this->pantallaOrdenartabla(tmp);
+			break;
 		case 7: 
 			this->exportacionTabla(tmp);
 			break;
@@ -166,8 +168,35 @@ public:
 			cout << "3) Igual a" << endl;
 			cin >> opcion;
 		} while (opcion<1 || opcion>3);
-		tabla->ejecutarFiltro(opcion);
+
+		string* s = new string(); Tipo tp = tabla->getTipoColumnasSeleccionadas();
+		cout << "Ingrese valor con el cual se va a comparar: ";
+		cin >> (*s);
+		
+		//provisional
+		Columna* datoComparar = this->validacion(s, tp);
+		if (datoComparar == nullptr) cout << "No se puede comparar, los valores, ya que no son del mismo tipo\n";
+
+		else
+		{
+			tabla->ejecutarFiltro(opcion, datoComparar);
+		}
+		system("pause");
 	}
+
+	void pantallaOrdenartabla(Tabla* tmp)
+	{
+		do
+		{
+			system("cls");
+			cout << "Ingrese el numero de la columna para ordenar:\n";
+			cin >> opcion;
+		} while (opcion < 1 || opcion > tmp->getNroColumnas());
+
+		tmp->OrdenarDatosporColumna(--opcion);
+		system("pause");
+	}
+
 	void imprimirTabla(Tabla* tmp)
 	{
 		do
@@ -343,5 +372,109 @@ private:
 		//imprimimos el ultimo
 		fila->agregar_final(new string((*s)));
 		delete s;
+	}
+
+	Columna* validacion(string* s, Tipo tp)
+	{
+		Columna* nuevo = nullptr;
+		//cout << "LLego hasta aqui 4\n";
+		//cout << (*s) << '\n';
+		switch (tp)
+		{
+		case Tipo::none:
+			break;
+		case Tipo::boolean:
+			if ((int)s->size() == 1)
+			{
+				int aux = (int)s->at(0);
+				if (aux >= 48 && aux <= 57)
+				{
+					nuevo = new ColumnaBool((bool)aux);
+				}
+			}
+			break;
+		case Tipo::integer:
+			//cout << "LLego hasta aqui, entro al integer\n";
+			if (((int)(*s)[0] >= 48 && (int)(*s)[0] <= 57) || (int)(*s)[0] == 43 || (int)(*s)[0] == 45)
+			{
+				//cout << "LLego a entrar al if de integer\n";
+				int i = 0, cntpunto = 0; bool vd = true;
+				if ((int)(*s)[0] == 43 || (int)(*s)[0] == 45)
+				{
+					if ((int)s->size() == 1)
+					{
+						vd = false;
+						break;
+					}
+					++i;
+				}
+
+				for (i; i < (int)s->size(); ++i)
+				{
+					int aux = (int)(*s)[i];
+					if (aux == 46) ++cntpunto;
+					if (!((aux >= 48 && aux <= 57) || aux == 46) ||
+						(cntpunto > 1) || (aux == 46 && i == (int)s->size() - 1))
+					{
+						vd = false;
+						break;
+					}
+				}
+				if (vd)
+				{
+					//cout << "LLego hasta aqui, para crear la columna\n";
+					int dato = stoi(*s);
+					nuevo = new ColumnaInt(dato);
+					//cout << "LLego hasta aqui,se termino de crear la columna\n";
+				}
+			}
+			//else cout << "no entro al if del integer\n";
+			break;
+		case Tipo::decimal:
+			if (((int)(*s)[0] >= 48 && (int)(*s)[0] <= 57) || (int)(*s)[0] == 43 || (int)(*s)[0] == 45)
+			{
+				int i = 0, cntpunto = 0; bool vd = true;
+				if ((int)(*s)[0] == 43 || (int)(*s)[0] == 45)
+				{
+					if ((int)s->size() == 1)
+					{
+						vd = false;
+						break;
+					}
+					++i;
+				}
+
+				for (i; i < (int)s->size(); ++i)
+				{
+					int aux = (int)(*s)[i];
+					if (aux == 46) ++cntpunto;
+					if (!((aux >= 48 && aux <= 57) || aux == 46) ||
+						(cntpunto > 1) || (aux == 46 && i == (int)s->size() - 1))
+					{
+						vd = false;
+						break;
+					}
+				}
+				if (vd)
+				{
+					float dato = stof(*s);
+					nuevo = new ColumnaDecimal(dato);
+				}
+			}
+			break;
+		case Tipo::caracter:
+			if ((int)s->size() == 1)
+			{
+				nuevo = new ColumnaCaracter((*s)[0]);
+			}
+			break;
+		case Tipo::cadena:
+			nuevo = new ColumnaString((*s));
+			break;
+		default:
+			break;
+		}
+		//cout << "LLego hasta aqui 5\n";
+		return nuevo;
 	}
 };
