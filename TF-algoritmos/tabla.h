@@ -63,6 +63,7 @@ public:
                 if (x >= 0) std::cout << this->nombresColumnas->get_pos(x)->getNombre() << '\t';
             std::cout << '\n';
 
+            //desde aca
             Lista<int, -1>* aux = this->selectColumnas;
             auto func = [aux](Fila* current)
             {
