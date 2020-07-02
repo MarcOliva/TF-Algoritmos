@@ -16,11 +16,12 @@ public:
 	Menu()
 	{
 		this->mistablas = new vector<Tabla*>();
-		/*Lista<ColumnaNombre*, nullptr>* nombres = new Lista<ColumnaNombre*, nullptr>();
-		nombres->agregar_final(new ColumnaNombre(Tipo::integer, "Codigo"));
-		nombres->agregar_final(new ColumnaNombre(Tipo::caracter, "Sexo"));
-		Tabla* mitabla = new Tabla("Alumno", 2, nombres);
-		this->mistablas->push_back(mitabla);*/
+		Lista<ColumnaNombre*, nullptr>* nombres = new Lista<ColumnaNombre*, nullptr>();
+		nombres->agregar_final(new ColumnaNombre(Tipo::cadena, "NOMBRE"));
+		nombres->agregar_final(new ColumnaNombre(Tipo::cadena, "APELLIDO"));
+		nombres->agregar_final(new ColumnaNombre(Tipo::integer, "EDAD"));
+		Tabla* mitabla = new Tabla("Alumno", 3, nombres);
+		this->mistablas->push_back(mitabla);
 		this->pantalla_menu();
 	}
 
@@ -175,10 +176,15 @@ public:
 			cout << "1) Mayor" << endl;
 			cout << "2) Menor" << endl;
 			cout << "3) Igual a" << endl;
+			cout << "4) Inicia con " << endl;
+			cout << "5) Termina con " << endl;
+			//cout << "6) Esta contenido en  " << endl;
+			cout << "Elige una opcion : " << endl;
 			cin >> opcion;
-		} while (opcion<1 || opcion>3);
+		} while (opcion<1 || opcion>5);
 
-		string* s = new string(); Tipo tp = tabla->getTipoColumnasSeleccionadas();
+		string* s = new string(); 
+		Tipo tp = tabla->getTipoColumnasSeleccionadas();
 		cout << "Ingrese valor con el cual se va a comparar: ";
 		cin >> (*s);
 		

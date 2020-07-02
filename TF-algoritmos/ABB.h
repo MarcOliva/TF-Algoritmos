@@ -69,6 +69,14 @@ public:
     {
         this->Igual_que(this->root, comparar, proc);
     }
+    void iniciaOterminaCon(function<bool(T)> comparar, function<void(T)> proc) {
+        this->iniciaOterminaCon(this->root,comparar,proc);
+    }
+    void estaContenidoEn(function<bool(T)> comparar, function<void(T)> proc) {
+        this->estaContenidoEn(this->root, comparar, proc);
+
+    }
+    
     //------------------------------METODOS PRIVADOS----------------------------------//
 private:
 
@@ -115,7 +123,33 @@ private:
             Igual_que(nodo->left, comparar, proc);
         }
     }
-
+    void iniciaOterminaCon(Nodo* nodo, function<bool(T)> comparar, function<void(T)> proc) {
+        if (nodo == nullptr) return;
+        else if (comparar(nodo->element))
+        {
+            iniciaOterminaCon(nodo->right, comparar, proc);
+            proc(nodo->element);
+        }
+        else
+        {
+            iniciaOterminaCon(nodo->right, comparar, proc);
+            iniciaOterminaCon(nodo->left, comparar, proc);
+        }
+    }
+    void estaContenidoEn(Nodo* nodo, function<bool(T)> comparar, function<void(T)> proc) {
+        if (nodo == nullptr) return;
+        else if (comparar(nodo->element))
+        {
+            estaContenidoEn(nodo->right, comparar, proc);
+            proc(nodo->element);
+        }
+        else
+        {
+            estaContenidoEn(nodo->right, comparar, proc);
+            estaContenidoEn(nodo->left, comparar, proc);
+        }
+    }
+   
     void clear(Nodo*& nodo)
     {
         if (nodo != nullptr)

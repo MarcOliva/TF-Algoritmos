@@ -13,6 +13,8 @@ private:
     int nroColumnas;
     int indexColumna;
     function<bool(Fila*, Fila*)> comparar;
+    function<void(Fila*)> imprimirFila;
+
 public:
     Tabla(std::string name, int nrocols, Lista<ColumnaNombre*, nullptr>* nombresCols = nullptr, int indexCol = 0)
         : nombre(name), nroColumnas(nrocols), indexColumna(indexCol)
@@ -23,7 +25,10 @@ public:
         {
             return mayor->compararMayor(menor, indexCol);
         };
-
+        this->imprimirFila = [](Fila* current)->void {
+            current->imprimirFila();
+            std::cout << '\n';
+        };
         this->datosArbol = new ABB<Fila*, Fila*, nullptr>(this->comparar);
 
         for (auto x : *nombresCols)
@@ -63,6 +68,7 @@ public:
                 if (x >= 0) std::cout << this->nombresColumnas->get_pos(x)->getNombre() << '\t';
             std::cout << '\n';
 
+            //desde aca
             Lista<int, -1>* aux = this->selectColumnas;
             auto func = [aux](Fila* current)
             {
@@ -155,14 +161,14 @@ public:
 
         this->datosArbol->inOrder(agregar);
 
-        auto func = [](Fila* current)
+        /*auto func = [](Fila* current)
         {
             current->imprimirFila();
             std::cout << '\n';
-        };
+        };*/
 
         //Imprime el nuevo arbol
-        nuevoArbol->inOrder(func);
+        nuevoArbol->inOrder(imprimirFila);
     }
 
     void ExportacionTabla(string nombre="default")
@@ -221,11 +227,11 @@ public:
     }
 
     void ejecutarFiltro(int opcion, Columna* datocomparar) {
-        auto func = [](Fila* current)
+     /*   auto func = [](Fila* current)
         {
             current->imprimirFila();
             std::cout << '\n';
-        };
+        };*/
         Lista<int, -1>* aux = this->selectColumnas;
 
         function<bool(Fila*)>  lambda_filtro = [&aux,opcion, &datocomparar](Fila* current) {
@@ -240,14 +246,23 @@ public:
         {
         //mayor
         case 1:
-            this->datosArbol->Mayor_que(lambda_filtro, func);
+            this->datosArbol->Mayor_que(lambda_filtro, imprimirFila);
             break;
         //menor
         case 2:
-            this->datosArbol->Menor_que(lambda_filtro, func);
+            this->datosArbol->Menor_que(lambda_filtro, imprimirFila);
             break;
         case 3: //igual
-            this->datosArbol->Igual_que(lambda_filtro, func);
+            this->datosArbol->Igual_que(lambda_filtro, imprimirFila);
+            break;
+        case 4:
+            this->datosArbol->iniciaOterminaCon(lambda_filtro, imprimirFila);
+            break;
+        case 5:
+            this->datosArbol->iniciaOterminaCon(lambda_filtro, imprimirFila);
+            break;
+        case 6:
+            this->datosArbol->estaContenidoEn(lambda_filtro, imprimirFila);
             break;
         default:
             break;
